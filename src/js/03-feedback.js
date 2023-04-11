@@ -17,7 +17,7 @@ document.addEventListener('DOMContentLoaded', onLoad);
 
 const dataForm = {
   email: '',
-  message: '',
+  message: ''
 };
 
 function onInput(event) {
@@ -41,8 +41,9 @@ function onLoad() {
 }
 
 function onSubmit(event) {
-  event.preventDefault();
-  console.log(dataForm);
+    event.preventDefault();
+    const finalData=JSON.parse(localStorage.getItem(STORAGE_KEY))
+  console.log(finalData);
   form.reset();
   localStorage.clear();
 }
