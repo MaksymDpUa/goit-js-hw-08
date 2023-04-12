@@ -13,37 +13,39 @@ const emailInput = document.querySelector('input');
 const messageArea = document.querySelector('textarea');
 form.addEventListener('input', throttle(onInput), 500);
 form.addEventListener('submit', onSubmit);
-document.addEventListener('DOMContentLoaded', onLoad);
+
+onLoad();
+
 
 const dataForm = {
   email: '',
-  message: ''
+  message: '',
 };
 
 function onInput(event) {
   event.preventDefault();
-
-  if (event.srcElement.name === 'email') {
-    dataForm.email += event.data;
-  } else if (event.srcElement.name === 'message') {
-    dataForm.message += event.data;
-  }
+  dataForm[event.target.name] = event.target.value;
   localStorage.setItem(STORAGE_KEY, JSON.stringify(dataForm));
-}
+};
 
 function onLoad() {
-  if (!localStorage.getItem(STORAGE_KEY)) {
-    return;
+  if (localStorage.getItem(STORAGE_KEY)) {
+    const savedData = JSON.parse(localStorage.getItem(STORAGE_KEY));
+    emailInput.value = savedData.email;
+    messageArea.value = savedData.message;
   }
-  const savedData = JSON.parse(localStorage.getItem(STORAGE_KEY));
-  emailInput.value = savedData.email;
-  messageArea.value = savedData.message;
-}
+};
 
 function onSubmit(event) {
-    event.preventDefault();
-    const finalData=JSON.parse(localStorage.getItem(STORAGE_KEY))
+  event.preventDefault();
+
+  if (emailInput.value === '' || messageArea.value === '') {
+    alert('Всі поля повинні бути заповненні!');
+    return;
+  }
+
+  const finalData = JSON.parse(localStorage.getItem(STORAGE_KEY));
   console.log(finalData);
   form.reset();
-  localStorage.clear();
-}
+  localStorage.removeItem(STORAGE_KEY)
+};
